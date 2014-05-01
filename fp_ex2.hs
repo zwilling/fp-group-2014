@@ -17,13 +17,13 @@ treeToList (Node ((x, y):xs)) = (treeToList x) ++ (treeToList (Node xs))
 bsp = Node [(Leaf [1,2], 1), (Node [(Leaf [6,7,8], 6)], 6) ]
 
 -- c
--- contains :: Ord a => a -> IndexedTree a -> Bool
--- contains e (Leaf xs) = elem e xs
--- contains e (Node [(x, y)]) | e < y = False
---                            | otherwise = contains e x
--- contains e (Node ((x, y):xs)) | e < y = False
---                               | otherwise = (contains e (Node xs)) || (contains e x)
--- nicht so schön
+contains :: Ord a => a -> IndexedTree a -> Bool
+contains e (Leaf xs) = elem e xs
+contains e (Node ((t1,n1):(t2,n2):xs))
+    | e < n1     = False
+    | e == n1     = True
+    | e < n2    = contains e t1
+    | otherwise    = contains e (Node ((t2, n2):xs)) 
 
 -- Exercise 2
 -- a)
