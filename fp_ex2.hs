@@ -25,6 +25,19 @@ bsp = Node [(Leaf [1,2], 1), (Node [(Leaf [6,7,8], 6)], 6) ]
 --                               | otherwise = (contains e (Node xs)) || (contains e x)
 -- nicht so schön
 
+-- Exercise 2
+-- a)
+data Regex = Or Regex Regex | Kleene Regex | Concat Regex Regex | Symbol Char | Empty
+
+exampleRegex = Or (Kleene Empty) (Concat (Symbol 'a') (Symbol 'b'))
+
+-- b)
+instance Show Regex where
+  show Empty        = "{}"
+  show (Symbol a)   = [a]
+  show (Kleene r)   = "(" ++ show r ++ ")*"
+  show (Or r s)     = "(" ++ show r ++ " | " ++ show s ++ ")"
+  show (Concat r s) = show r ++ show s
 
 -- Exercise 3
 
@@ -77,3 +90,27 @@ titlesOf :: Genre -> [Book] -> [String]
 titlesOf g bs = map (\x -> title x) (filter (\y -> (genre y) == g) bs)
 
 -- e
+pagesOf :: Genre -> [Book] -> Int
+pagesOf g l = totalPages (filter (\x -> g == (genre x)) l)
+
+-- Exercise 4
+data MultTree a = AMultTree a [MultTree a] deriving Show
+exMultTree = AMultTree 8 [AMultTree 3 [AMultTree (-56) [], AMultTree 4 [], AMultTree 987 []], AMultTree 4 [AMultTree 6 []]]
+
+-- a)
+mapMult :: (a -> b) -> MultTree a -> MultTree b
+mapMult f (AMultTree n l)  = AMultTree (f n) (map (mapMult f) l)
+
+-- b)
+mean x y = (x + y) `div` 2
+
+depthFirstFold :: (b -> a -> b) -> b -> MultTree a -> b
+--depthFirstFold :: (a -> a -> a) -> a -> MultTree a -> a -- workaround for testing
+
+depthFirstFold f e (AMultTree n []) = f e n
+-- TODO
+
+-- various previous attempts, all (completely??) wrong
+--depthFirstFold f e (AMultTree n (l:ls)) = depthFirstFold f (depthFirstFold f e l) (AMultTree n ls)
+--depthFirstFold f e (AMultTree n l) = foldr f (f e n) (map (depthFirstFold f e) l)
+--depthFirstFold f e (AMultTree n l) = f (foldr f e (map (depthFirstFold f e) l)) n
