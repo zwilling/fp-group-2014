@@ -11,8 +11,8 @@ data IndexedTree a = Leaf [a] | Node [(IndexedTree a, a)] deriving Show
 -- b
 treeToList :: IndexedTree a -> [a]
 treeToList (Leaf xs) = xs
-treeToList (Node [(x, y)]) = treeToList x
-treeToList (Node ((x, y):xs)) = (treeToList x) ++ (treeToList (Node xs))
+treeToList (Node [(x, _)]) = treeToList x
+treeToList (Node ((x, _):xs)) = (treeToList x) ++ (treeToList (Node xs))
 
 bsp = Node [(Leaf [1,2], 1), (Node [(Leaf [6,7,8], 6)], 6) ]
 
@@ -20,10 +20,10 @@ bsp = Node [(Leaf [1,2], 1), (Node [(Leaf [6,7,8], 6)], 6) ]
 contains :: Ord a => a -> IndexedTree a -> Bool
 contains e (Leaf xs) = elem e xs
 contains e (Node ((t1,n1):(t2,n2):xs))
-    | e < n1     = False
-    | e == n1     = True
+    | e < n1    = False
+    | e == n1   = True
     | e < n2    = contains e t1
-    | otherwise    = contains e (Node ((t2, n2):xs)) 
+    | otherwise = contains e (Node ((t2, n2):xs)) 
 
 -- Exercise 2
 -- a)
@@ -75,7 +75,7 @@ futureShock = ABook Nonfiction ("Toffler", "Alvin") "Future Shock" (01, 06, 1984
 
 -- a
 publishedIn :: Int -> [Book] -> [Book]
-publishedIn y = filter (\x -> (year x) == y)
+publishedIn y = filter $ \x -> year x == y
 
 -- b
 totalPages :: [Book] -> Int
@@ -83,15 +83,15 @@ totalPages = foldr (\x -> (+) (pages x)) 0
 
 -- c
 toAuthor :: [Book] -> [Name]
-toAuthor = map (\x -> author x)
+toAuthor = map author
 
 -- d
 titlesOf :: Genre -> [Book] -> [String]
-titlesOf g bs = map (\x -> title x) (filter (\y -> (genre y) == g) bs)
+titlesOf g bs = map title $ filter (\y -> g == genre y) bs
 
 -- e
 pagesOf :: Genre -> [Book] -> Int
-pagesOf g l = totalPages (filter (\x -> g == (genre x)) l)
+pagesOf g bs = totalPages $ filter (\x -> g == genre x) bs
 
 -- Exercise 4
 data MultTree a = AMultTree a [MultTree a] deriving Show
