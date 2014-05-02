@@ -104,13 +104,8 @@ mapMult f (AMultTree n l)  = AMultTree (f n) (map (mapMult f) l)
 -- b)
 mean x y = (x + y) `div` 2
 
-depthFirstFold :: (b -> a -> b) -> b -> MultTree a -> b
---depthFirstFold :: (a -> a -> a) -> a -> MultTree a -> a -- workaround for testing
+--depthFirstFold :: (b -> a -> b) -> b -> MultTree a -> b -- FIXME
+depthFirstFold f e r = foldr f e $ reverse $ treeContent r
 
-depthFirstFold f e (AMultTree n []) = f e n
--- TODO
-
--- various previous attempts, all (completely??) wrong
---depthFirstFold f e (AMultTree n (l:ls)) = depthFirstFold f (depthFirstFold f e l) (AMultTree n ls)
---depthFirstFold f e (AMultTree n l) = foldr f (f e n) (map (depthFirstFold f e) l)
---depthFirstFold f e (AMultTree n l) = f (foldr f e (map (depthFirstFold f e) l)) n
+treeContent :: MultTree a -> [a]
+treeContent (AMultTree n l) = (:) n $ concat $ map treeContent l
