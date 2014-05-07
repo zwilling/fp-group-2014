@@ -15,7 +15,7 @@ type Group = Int
 count :: Int -> [Pupil] -> [(Group, Pupil)]
 count n = zip xs where xs = 1:map ((1+) . (`mod` n)) xs
 
-count' n = zip (cycle [1..n]) -- way nicer!
+count' n = zip $ cycle [1..n] -- way nicer!
 
 -- Test: count 3 ["Pete", "Frank", "Sandra", "Caro", "Max"]
 -- >> [(1,"Pete"),(2,"Frank"),(3,"Sandra"),(1,"Caro"),(2,"Max")]
@@ -52,3 +52,5 @@ prefixsum' = map sum . tail . inits
 -- contains' x ys = foldr (\y b -> contains x y || b) False ys' where ys' = -- TODO
 
 -- c) TODO
+leapYears = [ x | x <- [1582..], x `isDivBy` 4, not (x `isDivBy` 100)  || x `isDivBy` 400 ]
+                where isDivBy a b = a `mod` b == 0
