@@ -11,9 +11,8 @@ main = do
     meal <- readInput recipes
     if (isExitCommand meal) then putStrLn "Leaving, good bye..."
     else do
-      putStrLn meal -- only for debugging
-      -- showRecipe meal
-      -- main
+      showRecipe meal
+      main
 
 findRecipes :: IO [String]
 findRecipes = do
@@ -53,5 +52,7 @@ isExitCommand :: String -> Bool
 isExitCommand cmd = (map toLower cmd) `elem` ["quit", "exit", "q", "e"]
 
 -- print the recipe with the given name on the command line
--- showRecipe :: String -> IO ()
--- showRecipe meal = -- TODO
+showRecipe :: String -> IO ()
+showRecipe meal = do
+  recipe <- readFile (meal ++ ending)
+  putChar '\n' >> putStrLn recipe
