@@ -23,7 +23,7 @@ count' n = zip $ cycle [1..n] -- way nicer!
 -- b)
 -- numbering starts at 0, and we'll leave it that way
 cantor :: Int -> Rational
-cantor = (!!) cantor'
+cantor n = cantor' !! (n-1) 
 
 cantor' :: [Rational]
 cantor' = concatMap cantorDiag [1..]
