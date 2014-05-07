@@ -20,23 +20,24 @@ count' n = zip (cycle [1..n]) -- way nicer!
 -- Test: count 3 ["Pete", "Frank", "Sandra", "Caro", "Max"]
 -- >> [(1,"Pete"),(2,"Frank"),(3,"Sandra"),(1,"Caro"),(2,"Max")]
 
--- b) TODO
+-- b)
+-- numbering starts at 0, and we'll leave it that way
 cantor :: Int -> Rational
-cantor = (!!) cantorAll
+cantor = (!!) cantor'
 
-cantorAll :: [Rational]
-cantorAll = foldr (++) [] $ map cantorH [1..]
+cantor' :: [Rational]
+cantor' = foldr (++) [] $ map cantorDiag [1..]
 
-tupleToFrac :: (Integer,Integer) -> Rational
-tupleToFrac (a,b) = a % b
-
-cantorH :: Integer -> [Rational] --Rational
-cantorH x = let l = [1..x] in
-                map tupleToFrac (filter isUniqe $ zip l (reverse l))
+-- calculates the diagonal of the Cantor triangle that
+-- starts with (1/n) and ends with (n/1)
+cantorDiag :: Integer -> [Rational]
+cantorDiag n = map tupleToFrac $ filter isUniqe $ zip list $ reverse list
                 where isUniqe (a,b) = gcd a b == 1
+                      tupleToFrac (a,b) = a % b
+                      list = [1..n]
 
 -- E2
--- a) TODO
+-- a)
 
 -- list comprehension version
 prefixsum :: [Int] -> [Int]
