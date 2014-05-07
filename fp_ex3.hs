@@ -1,3 +1,8 @@
+-- authors: Frederik Zwilling (304314)
+--          Roman Feldhoff (307750)
+--          Alex Lorenz (309599)
+--          Tom Janson (310271)
+
 -- Exercise sheet 3
 import Data.List(inits)
 
