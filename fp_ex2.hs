@@ -19,6 +19,7 @@ bsp = Node [(Leaf [1,2], 1), (Node [(Leaf [6,7,8], 6)], 6) ]
 -- c
 contains :: Ord a => a -> IndexedTree a -> Bool
 contains e (Leaf xs) = elem e xs
+contains e (Node [(t,n)]) = (e == n) || contains e t
 contains e (Node ((t1,n1):(t2,n2):xs))
     | e < n1    = False
     | e == n1   = True
