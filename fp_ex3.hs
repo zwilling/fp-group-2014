@@ -69,7 +69,7 @@ contains e (Node ((t1,n1):(t2,n2):xs))
 -- solution of this exercise:
 contains' :: Ord a => a -> [IndexedTree a] -> Bool
 contains' x ys = foldr (\y b -> contains x y || b) False ys'
-    where ys' = filter (\x -> sort (treeToList x) == treeToList x) ys
+  where ys' = [t | t <- ys , (treeToList t) == (sort (treeToList t))]
 
 -- c)
 leapYears = [ x | x <- [1582..], x `isDivBy` 4, not (x `isDivBy` 100)  || x `isDivBy` 400 ]
