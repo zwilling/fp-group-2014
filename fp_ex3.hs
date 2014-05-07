@@ -26,15 +26,12 @@ cantor :: Int -> Rational
 cantor = (!!) cantor'
 
 cantor' :: [Rational]
-cantor' = foldr (++) [] $ map cantorDiag [1..]
+cantor' = concatMap cantorDiag [1..]
 
 -- calculates the diagonal of the Cantor triangle that
 -- starts with (1/n) and ends with (n/1)
 cantorDiag :: Integer -> [Rational]
-cantorDiag n = map tupleToFrac $ filter isUniqe $ zip list $ reverse list
-                where isUniqe (a,b) = gcd a b == 1
-                      tupleToFrac (a,b) = a % b
-                      list = [1..n]
+cantorDiag n = [a % b | a <- [1..n], b <- [n+1-a] , gcd a b == 1]
 
 -- E2
 -- a)
