@@ -51,6 +51,6 @@ prefixsum' = map sum . tail . inits
 -- contains' :: Ord a => a -> [IndexedTree a] -> Bool
 -- contains' x ys = foldr (\y b -> contains x y || b) False ys' where ys' = -- TODO
 
--- c) TODO
+-- c)
 leapYears = [ x | x <- [1582..], x `isDivBy` 4, not (x `isDivBy` 100)  || x `isDivBy` 400 ]
-                where isDivBy a b = a `mod` b == 0
+                where isDivBy = (\x -> 0 == x) . mod
