@@ -21,16 +21,14 @@ count' n = zip $ cycle [1..n] -- way nicer!
 -- >> [(1,"Pete"),(2,"Frank"),(3,"Sandra"),(1,"Caro"),(2,"Max")]
 
 -- b)
+-- 1 is subtracted from the argument to shift the indices
 cantor :: Int -> Rational
-cantor n = cantor' !! (n-1) 
+cantor x = cantor' !! (x-1)
 
+-- the n-th diagonal of the triangle looks like 1%n, 2%(n-1), ... , (n-1)%2, n%1
+-- we follow the diagonals but exclude redundant fractions
 cantor' :: [Rational]
-cantor' = concatMap cantorDiag [1..]
-
--- calculates the diagonal of the Cantor triangle that
--- starts with (1/n) and ends with (n/1)
-cantorDiag :: Integer -> [Rational]
-cantorDiag n = [a % b | a <- [1..n], b <- [n+1-a] , gcd a b == 1]
+cantor' = [ a % b | n <- [1..], a <- [1..n], let b = n + 1 - a, gcd a b == 1]
 
 -- E2
 -- a)
@@ -69,7 +67,7 @@ contains e (Node ((t1,n1):(t2,n2):xs))
 -- solution of this exercise:
 contains' :: Ord a => a -> [IndexedTree a] -> Bool
 contains' x ys = foldr (\y b -> contains x y || b) False ys'
-  where ys' = [t | t <- ys , (treeToList t) == (sort (treeToList t))]
+  where ys' = [t | t <- ys , let l = treeToList t, sort l == l]
 
 -- c)
 leapYears = [ x | x <- [1582..], x `isDivBy` 4, not (x `isDivBy` 100)  || x `isDivBy` 400 ]
