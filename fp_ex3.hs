@@ -46,9 +46,29 @@ prefixsum' = map sum . tail . inits
 -- Test: prefixsum [2,4,5,0,1]
 -- >> [2,6,11,11,12]
 
--- b) TODO
+-- b)
+-- our solution from Exercise 2/1
+-- a
+data IndexedTree a = Leaf [a] | Node [(IndexedTree a, a)] deriving Show
+-- b
+treeToList :: IndexedTree a -> [a]
+treeToList (Leaf xs) = xs
+treeToList (Node [(x, _)]) = treeToList x
+treeToList (Node ((x, _):xs)) = (treeToList x) ++ (treeToList (Node xs))
+bsp = Node [(Leaf [1,2], 1), (Node [(Leaf [6,7,8], 6)], 6) ]
+-- c
+contains :: Ord a => a -> IndexedTree a -> Bool
+contains e (Leaf xs) = elem e xs
+contains e (Node ((t1,n1):(t2,n2):xs))
+    | e < n1    = False
+    | e == n1   = True
+    | e < n2    = contains e t1
+    | otherwise = contains e (Node ((t2, n2):xs))
+
+-- solution of this exercise:
 -- contains' :: Ord a => a -> [IndexedTree a] -> Bool
--- contains' x ys = foldr (\y b -> contains x y || b) False ys' where ys' = -- TODO
+-- contains' x ys = foldr (\y b -> contains x y || b) False ys' where
+--   ys' = 
 
 -- c)
 leapYears = [ x | x <- [1582..], x `isDivBy` 4, not (x `isDivBy` 100)  || x `isDivBy` 400 ]
