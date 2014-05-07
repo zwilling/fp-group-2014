@@ -21,7 +21,6 @@ count' n = zip $ cycle [1..n] -- way nicer!
 -- >> [(1,"Pete"),(2,"Frank"),(3,"Sandra"),(1,"Caro"),(2,"Max")]
 
 -- b)
--- numbering starts at 0, and we'll leave it that way
 cantor :: Int -> Rational
 cantor n = cantor' !! (n-1) 
 
@@ -53,4 +52,4 @@ prefixsum' = map sum . tail . inits
 
 -- c)
 leapYears = [ x | x <- [1582..], x `isDivBy` 4, not (x `isDivBy` 100)  || x `isDivBy` 400 ]
-                where isDivBy = (\x -> 0 == x) . mod
+                where isDivBy = (\x y -> 0 == mod x y)
